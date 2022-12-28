@@ -1,16 +1,20 @@
 from read_data import read_data, downsample
 from ecgdetectors import Detectors
 from beat_to_beat import compute_rate,heart_rate
+import plots
+import stats
 from matplotlib import pyplot as plt
 import matplotlib.gridspec as gridspec
 import numpy as np
 import os
+
+
 F_SAMPLE = 50
 
 def main():
     # Read dataset from file
     print("Reading data...")
-    data_folder = '../data/'
+    data_folder = './data/'
 
     ecg_hr = []
     bcg_hr = []
@@ -50,6 +54,11 @@ def main():
     # plt.plot(bcg_hr, label='BCG')
     # plt.legend()
     # plt.show()
+
+    plots.get_bland_altman_plot(ecg_hr,bcg_hr)
+    plots.get_boxplot(ecg_hr,bcg_hr)
+
+    stats.calculate_stats(ecg_hr,bcg_hr)
     
 
 
