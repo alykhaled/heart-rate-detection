@@ -76,5 +76,14 @@ def get_pearson_correlation(ecg,bcg):
     #Line of best fit
     sns.lmplot(x="ECG", y="BCG", data=calc_pearson_correlation)
     
+
+    #Heatmap:annot to represent cell values
+    heatmap_labels=sns.heatmap(calc_pearson_correlation, annot=True, linewidth=.5, cmap="YlGnBu")
+    heatmap_labels.set_title("Pearson Correlation Heatmap")
+    heatmap_labels.set_xlabel("ECG")
+    heatmap_labels.set_ylabel("BCG")
+    plt.savefig("pearson_correlation_heatmap.png")
+
+    
    
 
