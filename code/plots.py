@@ -7,10 +7,12 @@ from ecgdetectors import Detectors
 from beat_to_beat import compute_rate,heart_rate
 import os
 from bland_altman import bland_altman_plot
-
-# rows = 2
-# columns = 2
-# fig = plt.figure(figsize=(20, 15))
+import seaborn as sns
+from scipy import stats
+ 
+rows = 2
+columns = 2
+fig = plt.figure(figsize=(20, 15))
 
 def get_bland_altman_plot(ecg,bcg):
 
@@ -47,18 +49,32 @@ def get_boxplot(ecg,bcg):
     # plt.axis('off')
     # plt.title("BCG Boxplot")
 
-# def get_pearson_correlation(ecg,bcg):
-#     ecg_array = np.asarray(ecg)
-#     bcg_array = np.asarray(bcg)
-#     print("ECG ISSSSSSSSSSSSSS"+ str(ecg))
-#     print("BCG ISSSSSSSSSSSSSS"+ str(bcg))
-#     calc_pearson_correlation = np.corrcoef(ecg_array, bcg_array)
-#     plt.savefig("pearson_correlation.png")
+
+def get_pearson_correlation(ecg,bcg):
+    ecg_array = np.asarray(ecg)
+    bcg_array = np.asarray(bcg)
+
+    #CALCULATING PEARSON CORRELATION returns 2d matrix
+    calc_pearson_correlation = np.corrcoef(ecg_array, bcg_array)
+    print("Pearson Correlation Matrix is " + str(calc_pearson_correlation))
     
-#     fig.add_subplot(rows, columns, 2)
-#     plt.imshow(calc_pearson_correlation)
-#     plt.axis('off')
-#     plt.title("Pearson Correlation")    
+    #Returns Correlation Coefficient and P-value
+    #stats.pearsonr(con['ecg_array'], con['bcg_array'])
 
+    
+    #Plotting Data
+    plt.savefig("pearson_correlation.png")
+    fig.add_subplot(rows, columns, 2)
+    sns.scatterplot(x=ecg_array, y=bcg_array,data=calc_pearson_correlation)
 
+    #Plotting Labels and Title
+    add_labels = sns.scatterplot(x=ecg_array, y=bcg_array, data=calc_pearson_correlation)
+    add_labels.set_title("Pearson Correlation")
+    add_labels.set_xlabel("ECG")
+    add_labels.set_ylabel("BCG")
+
+    #Line of best fit
+    sns.lmplot(x="ECG", y="BCG", data=calc_pearson_correlation)
+    
+   
 
