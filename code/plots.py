@@ -47,5 +47,18 @@ def get_boxplot(ecg,bcg):
     # plt.axis('off')
     # plt.title("BCG Boxplot")
 
+# def get_pearson_correlation(ecg,bcg):
+#     ecg_array = np.asarray(ecg)
+#     bcg_array = np.asarray(bcg)
+#     print("ECG ISSSSSSSSSSSSSS"+ str(ecg))
+#     print("BCG ISSSSSSSSSSSSSS"+ str(bcg))
+#     calc_pearson_correlation = np.corrcoef(ecg_array, bcg_array)
+#     plt.savefig("pearson_correlation.png")
+    
+#     fig.add_subplot(rows, columns, 2)
+#     plt.imshow(calc_pearson_correlation)
+#     plt.axis('off')
+#     plt.title("Pearson Correlation")    
+
 
 

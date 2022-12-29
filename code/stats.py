@@ -10,21 +10,19 @@ import os
 
 
 def calculate_stats(ecg,bcg):
-
-    #mean abs error
-
+    mean_absolute_error=0
     root_mean_square_error=0
     mean_absolute_percentage_error=0
 
     for i in range (0,len(ecg)):
+        mean_absolute_error += np.abs(ecg[i] - bcg[i])
 
-        #mean abs error
-        
-        
         root_mean_square_error += (ecg[i] - bcg[i]) ** 2
         
         mean_absolute_percentage_error += np.abs((ecg[i] - bcg[i]) / bcg[i])
 
+    mean_absolute_error = mean_absolute_error / len(ecg)
+    mean_absolute_error = np.abs(mean_absolute_error)
 
     root_mean_square_error = root_mean_square_error / len(ecg)
     root_mean_square_error = np.sqrt(root_mean_square_error)
@@ -34,7 +32,7 @@ def calculate_stats(ecg,bcg):
 
 
     print("-----------ERROR CALCULATIONS-----------")
-    #mean abs error
+    print("Mean Absolute Error = " + str(mean_absolute_error))
     print("Root Mean Square Error = " + str(root_mean_square_error))
     print("Mean Absolute Percentage Error = " + str(mean_absolute_percentage_error)+ "%")
 
