@@ -1,5 +1,6 @@
 from read_data import read_data, downsample
 from ecgdetectors import Detectors
+import heartpy as hp
 from beat_to_beat import heart_rate
 import plots
 import stats
@@ -23,7 +24,7 @@ WINDOW_N = WINDOW_TIME_SEC * F_SAMPLE
 def main():
     # Read dataset from file
     print("Reading data...")
-    data_folder = '../data/'
+    data_folder = './data/'
 
     ecg_hr = []
     bcg_hr = []
@@ -43,8 +44,9 @@ def main():
 
             # Detect peaks of ECG using pan tompkins library
             print("Detecting peaks of ECG...")
-            detectors = Detectors(F_SAMPLE) # Initialize detectors object
-            r_peaks = detectors.pan_tompkins_detector(ecg) # Detect R peaks
+            # detectors = Detectors(F_SAMPLE) # Initialize detectors object
+            # r_peaks = detectors.pan_tompkins_detector(ecg) # Detect R peaks
+            r_peaks = hp.process(ecg, F_SAMPLE)[0]['peaklist']# Using heartpy library
             hr_ecg = heart_rate(r_peaks, len(ecg), t_window_sec= WINDOW_TIME_SEC, fs= F_SAMPLE) # Calculate heart rate from R peaks
             ecg_hr.append(hr_ecg)
 
@@ -66,10 +68,25 @@ def main():
             bcg_hr.append(hr_bcg)
             print("Heart rate (BCG): " + str(hr_bcg))
 
-            print('\nHeart Rate Information')
+            # Print the results of the two methods
+
+            print("Printing results...\n")
+
+            print('----------------------')
+            print('patient id : ', file[1:4])
+            print('Heart Rate Information')
+            print('----------------------')
+            print('ECG Method')
+            print('Minimum pulse : ', np.around(np.min(hr_ecg)))
+            print('Maximum pulse : ', np.around(np.max(hr_ecg)))
+            print('Average pulse : ', np.around(np.mean(hr_ecg)))
+            print('----------------------')
+            print('BCG Method')
             print('Minimum pulse : ', np.around(np.min(hr_bcg)))
             print('Maximum pulse : ', np.around(np.max(hr_bcg)))
             print('Average pulse : ', np.around(np.mean(hr_bcg)))
+            print('----------------------')
+
 
             # Plot the results of the two methods 
             print("Plotting results...")

@@ -19,7 +19,7 @@ def compute_rate(beats,mpd, indices= None):
     else:
         return 0.0, 0.0
 
-def heart_rate( peaks:np.array, sig_length:int, t_window_sec = 5 , fs = 50):
+def heart_rate( peaks:np.array, sig_length:int, t_window_sec = 5 , fs = 50) -> np.array:
     """
     Calculate heart rate from peaks given window size.
     
@@ -43,9 +43,7 @@ def heart_rate( peaks:np.array, sig_length:int, t_window_sec = 5 , fs = 50):
             if peak > i and peak < i + t_window_n:
                 peak_count += 1
         # calculate heart rate
-        diff_sample = peaks_in_window[-1] - peaks_in_window[0] + 1
-        t_N = diff_sample / 50
-        heartRate.append(len(peaks_in_window) / t_N * 60)
+        heartRate = np.append(heartRate, peak_count / t_window_sec * 60)
 
     return heartRate
 
