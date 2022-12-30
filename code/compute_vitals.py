@@ -5,7 +5,7 @@ Function to compute vitals, i.e., heart rate and respiration.
 
 import numpy as np
 
-from beat_to_beat import compute_rate, heart_rate,heart_rate_time
+from beat_to_beat import compute_rate
 
 
 def vitals(t1, t2, win_size, window_limit, sig, mpd, plot=0):
