@@ -10,7 +10,7 @@ from beat_to_beat import compute_rate
 
 def vitals(t1, t2, win_size, window_limit, sig, mpd, plot=0):
     all_rate = []
-    for j in range(0, window_limit//win_size):
+    for j in range(0, (window_limit//win_size) + 1):
         sub_signal = sig[t1:t2]
         [rate, indices] = compute_rate(sub_signal,mpd)
         all_rate.append(rate)

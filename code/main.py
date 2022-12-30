@@ -25,7 +25,7 @@ WINDOW_N = WINDOW_TIME_SEC * F_SAMPLE
 def main():
     # Read dataset from file
     print("Reading data...")
-    data_folder = './data/'
+    data_folder = '../data/'
 
     ecg_hr = []
     bcg_hr = []
@@ -77,9 +77,12 @@ def main():
 
             # Plot the results of the two methods 
             print("Plotting results...")
-
-            # plots.get_bland_altman_plot(ecg_hr,bcg_hr)
-            # plots.get_boxplot(ecg_hr,bcg_hr)
+            ecg_hr = np.array(ecg_hr).flatten()
+            bcg_hr = np.array(bcg_hr).flatten()
+            print(ecg_hr.shape)
+            print(bcg_hr.shape)
+            plots.get_bland_altman_plot(ecg_hr,bcg_hr)
+            plots.get_boxplot(ecg_hr,bcg_hr)
 
             # stats.calculate_stats(ecg_hr,bcg_hr)
 
