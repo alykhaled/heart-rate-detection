@@ -36,7 +36,7 @@ def main():
             print("Detecting peaks of ECG...")
             detectors = Detectors(F_SAMPLE) # Initialize detectors object
             r_peaks = detectors.pan_tompkins_detector(ecg) # Detect R peaks
-            hr_ecg = heart_rate(r_peaks) # Calculate heart rate from R peaks
+            hr_ecg = heart_rate(r_peaks, len(ecg)) # Calculate heart rate from R peaks
             ecg_hr.append(hr_ecg)
 
             print("Heart rate: " + str(hr_ecg))
@@ -44,7 +44,7 @@ def main():
             # Detect Peaks of BCG by adapting the dr's code
             print("Detecting peaks of BCG...")
             j_peaks = detectors.pan_tompkins_detector(bcg) # Detect J peaks
-            hr_bcg = heart_rate(j_peaks) # Calculate heart rate from J peaks
+            hr_bcg = heart_rate(j_peaks, len(bcg)) # Calculate heart rate from J peaks
             bcg_hr.append(hr_bcg)
             print("Heart rate: " + str(hr_bcg))
 

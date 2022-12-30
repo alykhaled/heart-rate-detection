@@ -18,8 +18,8 @@ def get_bland_altman_plot(ecg,bcg):
 
     ecg_array = np.asarray(ecg)
     bcg_array = np.asarray(bcg)
-    print("ECG ISSSSSSSSSSSSSS"+ str(ecg))
-    print("BCG ISSSSSSSSSSSSSS"+ str(bcg))
+    # print("ECG ISSSSSSSSSSSSSS"+ str(ecg))
+    # print("BCG ISSSSSSSSSSSSSS"+ str(bcg)) # use debugger to see the values
     calc_bland_altman_plot = bland_altman_plot(ecg_array, bcg_array)
     plt.savefig("bland_altman_plot.png")
 
