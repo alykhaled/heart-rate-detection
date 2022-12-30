@@ -27,10 +27,10 @@ def main():
     print("Reading data...")
     data_folder = '../data/'
 
-    ecg_hr = []
-    bcg_hr = []
+    # ecg_hr = []
+    # bcg_hr = []
     # Loop over all files in the folder
-    for file in os.listdir(data_folder):
+    for file in os.listdir(data_folder)[:2]:
         if file.endswith(".csv") and file.startswith("X"):
             print(os.path.join(data_folder, file))
             path = os.path.join(data_folder, file)
@@ -47,9 +47,23 @@ def main():
             print("Detecting peaks of ECG...")
             # detectors = Detectors(F_SAMPLE) # Initialize detectors object
             # r_peaks = detectors.pan_tompkins_detector(ecg) # Detect R peaks
-            r_peaks = hp.process(ecg, F_SAMPLE)[0]['peaklist']# Using heartpy library
-            hr_ecg = heart_rate(r_peaks, len(ecg), t_window_sec= WINDOW_TIME_SEC, fs= F_SAMPLE) # Calculate heart rate from R peaks
-            ecg_hr.append(hr_ecg)
+            w = modwt(ecg, 'bior3.9', 4)
+            dc = modwtmra(w, 'bior3.9')
+            wavelet_cycle_ecg = dc[4]
+            # r_peaks = hp.process(ecg, F_SAMPLE)[0]['peaklist']# Using heartpy library
+
+            # hr_ecg = heart_rate(r_peaks, len(ecg), t_window_sec= WINDOW_TIME_SEC, fs= F_SAMPLE) # Calculate heart rate from R peaks
+            # ecg_hr.append(hr_ecg)
+            t1, t2, window_length, window_shift = 0, 500, 500, 500
+            limit = int(math.floor(bcg.size / window_shift))
+            # ECG_flat = ECG_data.flatten()
+            hr_ecg = []
+            for k in range(0, limit+1):
+                wd, m = hp.process(wavelet_cycle_ecg[t1:t2],50)
+                heartRate_ecg = m["bpm"]
+                hr_ecg.append(heartRate_ecg)
+                t1 = t2
+                t2 += window_shift
 
             print("Heart rate (ECG): " + str(hr_ecg))
 
@@ -66,7 +80,7 @@ def main():
             
             hr_bcg = vitals(T1, WINDOW_N, WINDOW_N, bcg.size, wavelet_cycle,mpd=1, plot=0)
             # bcg_hr.append(np.around(np.mean(hr_bcg)))
-            bcg_hr.append(hr_bcg)
+            # bcg_hr.append(hr_bcg)
             print("Heart rate (BCG): " + str(hr_bcg))
 
             # Print the results of the two methods
@@ -77,12 +91,13 @@ def main():
 
             # Plot the results of the two methods 
             print("Plotting results...")
-            ecg_hr = np.array(ecg_hr).flatten()
-            bcg_hr = np.array(bcg_hr).flatten()
-            print(ecg_hr.shape)
-            print(bcg_hr.shape)
-            plots.get_bland_altman_plot(ecg_hr,bcg_hr)
-            plots.get_boxplot(ecg_hr,bcg_hr)
+            hr_ecg = np.array(hr_ecg).flatten()
+            hr_bcg = np.array(hr_bcg).flatten()
+            print(hr_ecg.shape)
+            print(hr_bcg.shape)
+            plots.get_bland_altman_plot(hr_ecg,hr_bcg)
+            # plots.get_boxplot(hr_ecg,hr_bcg)
+
 
             # stats.calculate_stats(ecg_hr,bcg_hr)
 

@@ -31,6 +31,8 @@ def get_bland_altman_plot(ecg,bcg):
 
 def get_boxplot(ecg,bcg):
 
+    ecg = np.asarray(ecg)
+    bcg = np.asarray(bcg)
     plt.boxplot(ecg)
     plt.savefig("ecg_boxplot.png")
 
