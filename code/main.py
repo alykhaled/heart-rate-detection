@@ -4,6 +4,7 @@ import heartpy as hp
 from beat_to_beat import heart_rate
 import plots
 import stats
+import prints
 from matplotlib import pyplot as plt
 import matplotlib.gridspec as gridspec
 from detect_peaks import detect_peaks
@@ -72,21 +73,7 @@ def main():
 
             print("Printing results...\n")
 
-            print('----------------------')
-            print('patient id : ', file[1:4])
-            print('Heart Rate Information')
-            print('----------------------')
-            print('ECG Method')
-            print('Minimum pulse : ', np.around(np.min(hr_ecg)))
-            print('Maximum pulse : ', np.around(np.max(hr_ecg)))
-            print('Average pulse : ', np.around(np.mean(hr_ecg)))
-            print('----------------------')
-            print('BCG Method')
-            print('Minimum pulse : ', np.around(np.min(hr_bcg)))
-            print('Maximum pulse : ', np.around(np.max(hr_bcg)))
-            print('Average pulse : ', np.around(np.mean(hr_bcg)))
-            print('----------------------')
-
+            prints.print_summary(hr_ecg,hr_bcg,file)
 
             # Plot the results of the two methods 
             print("Plotting results...")
