@@ -95,8 +95,8 @@ def main():
             hr_bcg = np.array(hr_bcg).flatten()
             print(hr_ecg.shape)
             print(hr_bcg.shape)
-            plots.get_bland_altman_plot(hr_ecg,hr_bcg)
-            # plots.get_boxplot(hr_ecg,hr_bcg)
+            # plots.get_bland_altman_plot(hr_ecg,hr_bcg)
+            plots.get_boxplot(hr_ecg,hr_bcg)
 
 
             # stats.calculate_stats(ecg_hr,bcg_hr)
