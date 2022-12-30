@@ -30,7 +30,7 @@ def heart_rate( peaks:np.array, sig_length:int, t_window_sec = 5 , fs = 50) -> n
 
     :return: heart rate array
     """
-    heartRate = []
+    heartRate = np.array([]).astype(np.float32)
     t_window_n = t_window_sec * fs
     # loop over all peaks and count how many peaks are in the window
     for i in range(0, sig_length+1, round(t_window_n)):
@@ -43,6 +43,7 @@ def heart_rate( peaks:np.array, sig_length:int, t_window_sec = 5 , fs = 50) -> n
             if peak > i and peak < i + t_window_n:
                 peak_count += 1
         # calculate heart rate
+
         heartRate = np.append(heartRate, peak_count / t_window_sec * 60)
 
     return heartRate

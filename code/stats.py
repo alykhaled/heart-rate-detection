@@ -9,7 +9,7 @@ import os
 
 
 
-def calculate_stats(ecg,bcg):
+def calculate_stats(ecg,bcg, patient_id):
     mean_absolute_error=0
     root_mean_square_error=0
     mean_absolute_percentage_error=0
@@ -19,7 +19,7 @@ def calculate_stats(ecg,bcg):
 
         root_mean_square_error += (ecg[i] - bcg[i]) ** 2
         
-        mean_absolute_percentage_error += np.abs((ecg[i] - bcg[i]) / bcg[i])
+        mean_absolute_percentage_error += np.abs((ecg[i] - bcg[i]) / ecg[i])
 
     mean_absolute_error = mean_absolute_error / len(ecg)
     mean_absolute_error = np.abs(mean_absolute_error)
@@ -31,9 +31,7 @@ def calculate_stats(ecg,bcg):
     mean_absolute_percentage_error = mean_absolute_percentage_error * 100
 
 
-    print("-----------ERROR CALCULATIONS-----------")
+    print("-----------ERROR CALCULATIONS FOR PATIENT WITH ID : "+ str(patient_id)+"-----------")
     print("Mean Absolute Error = " + str(mean_absolute_error))
     print("Root Mean Square Error = " + str(root_mean_square_error))
     print("Mean Absolute Percentage Error = " + str(mean_absolute_percentage_error)+ "%")
-
-

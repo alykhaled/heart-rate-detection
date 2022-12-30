@@ -21,7 +21,7 @@ def get_bland_altman_plot(ecg,bcg):
     # print("ECG ISSSSSSSSSSSSSS"+ str(ecg))
     # print("BCG ISSSSSSSSSSSSSS"+ str(bcg)) # use debugger to see the values
     calc_bland_altman_plot = bland_altman_plot(ecg_array, bcg_array)
-    plt.savefig("bland_altman_plot.png")
+    # plt.savefig("bland_altman_plot.png")
 
     # fig.add_subplot(rows, columns, 1)
 
@@ -34,7 +34,7 @@ def get_boxplot(ecg,bcg):
     ecg = np.asarray(ecg)
     bcg = np.asarray(bcg)
     plt.boxplot(ecg)
-    plt.savefig("ecg_boxplot.png")
+    # plt.savefig("ecg_boxplot.png")
 
     # fig.add_subplot(rows, columns, 3)
     # plt.imshow(plt.boxplot(ecg))
@@ -42,7 +42,7 @@ def get_boxplot(ecg,bcg):
     # plt.title("ECG Boxplot")
 
     plt.boxplot(bcg)
-    plt.savefig("bcg_boxplot.png")
+    # plt.savefig("bcg_boxplot.png")
 
     # fig.add_subplot(rows, columns, 4)
   
@@ -57,14 +57,23 @@ def get_pearson_correlation(ecg, bcg):
     bcg_array = np.asarray(bcg)
     calc_pearson_correlation = np.corrcoef(ecg_array, bcg_array)
 
+
+    #convert to pandas dataframe with two columns
+    dataframe = pd.DataFrame(columns=["ECG", "BCG"])
+    # instert ecg and bcg values into dataframe
+    dataframe["ECG"] = ecg_array
+    dataframe["BCG"] = bcg_array
+    
+
     # Line of best fit
-    sns.lmplot(x="ECG", y="BCG", data=calc_pearson_correlation)
+    sns.lmplot(x="ECG", y="BCG", data=dataframe)
 
     plt.scatter(ecg_array, bcg_array)
-    plt.title("Pearson Correlation")
+    plt.title("Pearson Correlation of " + str(calc_pearson_correlation))
     plt.xlabel("ECG")
     plt.ylabel("BCG")
-    plt.savefig("pearson_correlation.png")
+    plt.savefig("results/pearson_correlation.png")
+    # plt.imshow()
 
 
 def get_pearson_HeatMap(ecg, bcg):
@@ -75,7 +84,7 @@ def get_pearson_HeatMap(ecg, bcg):
     heatmap_labels.set_title("Pearson Correlation Heatmap")
     heatmap_labels.set_xlabel("ECG")
     heatmap_labels.set_ylabel("BCG")
-    plt.savefig("pearson_correlation_heatmap.png")
+    # plt.savefig("results/pearson_correlation_heatmap.png")
     
 
 
