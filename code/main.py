@@ -5,7 +5,12 @@ import plots
 import stats
 from matplotlib import pyplot as plt
 import matplotlib.gridspec as gridspec
+from detect_peaks import detect_peaks
+from compute_vitals import vitals
 import numpy as np
+import math
+from modwt_matlab_fft import modwt
+from modwt_mra_matlab_fft import modwtmra
 import os
 
 
@@ -43,23 +48,34 @@ def main():
 
             # Detect Peaks of BCG by adapting the dr's code
             print("Detecting peaks of BCG...")
-            j_peaks = detectors.pan_tompkins_detector(bcg) # Detect J peaks
-            hr_bcg = heart_rate(j_peaks, len(bcg)) # Calculate heart rate from J peaks
-            bcg_hr.append(hr_bcg)
-            print("Heart rate: " + str(hr_bcg))
+            w = modwt(bcg, 'bior3.9', 4)
+            dc = modwtmra(w, 'bior3.9')
+            wavelet_cycle = dc[4]
+            t1, t2, window_length, window_shift = 0, 500, 500, 500
+            limit = int(math.floor(bcg.size / window_shift))
+            j_peaks = detect_peaks(bcg, mpd=1000, show=False) # Detect J peaks
+            beats = vitals(t1, t2, window_shift, limit, wavelet_cycle,mpd=1, plot=0)
+            print('\nHeart Rate Information')
+            print('Minimum pulse : ', np.around(np.min(beats)))
+            print('Maximum pulse : ', np.around(np.max(beats)))
+            print('Average pulse : ', np.around(np.mean(beats)))
+            bcg_hr.append(np.around(np.mean(beats)))
 
     # Plot the results of the two methods 
     print("Plotting results...")
-    # plt.plot(ecg_hr, label='ECG')
-    # plt.plot(bcg_hr, label='BCG')
-    # plt.legend()
-    # plt.show()
-
+    plt.figure(figsize=(10, 5))
+    plt.plot(ecg_hr, label='ECG')
+    plt.plot(bcg_hr, label='BCG')
+    plt.xlabel('Patient')
+    plt.ylabel('Heart rate (bpm)')
+    plt.legend()
+    plt.show()
+    
     plots.get_bland_altman_plot(ecg_hr,bcg_hr)
     plots.get_boxplot(ecg_hr,bcg_hr)
 
     stats.calculate_stats(ecg_hr,bcg_hr)
-    
+
 
 
 if __name__ == '__main__':
