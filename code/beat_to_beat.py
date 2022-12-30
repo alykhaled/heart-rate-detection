@@ -3,17 +3,13 @@ import numpy as np
 from detect_peaks import detect_peaks
 
 
-def compute_rate(beats,mpd, indices= None):
-    if indices is None:
-        indices = detect_peaks(beats, mpd=mpd)
-    else:
-        #TODO: this needs review
-        # get indecies of peaks in beats array
-        indices = np.array([i for i, x in enumerate(beats) if x in indices])
+def compute_rate(beats,mpd,fs):
+
+    indices = detect_peaks(beats, mpd=mpd)
 
     if len(indices) > 1:
         diff_sample = indices[-1] - indices[0] + 1
-        t_N = diff_sample / 50
+        t_N = diff_sample / fs
         heartRate = (len(indices) - 1) / t_N * 60
         return heartRate, indices
     else:
