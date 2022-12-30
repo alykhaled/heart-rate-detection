@@ -19,7 +19,7 @@ from data_subplot import data_subplot
 # Main program starts here
 print('\nstart processing ...')
 
-file = '../data/sample_data.csv'
+file = './data/sample_data.csv'
 
 if file.endswith(".csv"):
     fileName = os.path.join(file)

@@ -23,7 +23,7 @@ WINDOW_N = WINDOW_TIME_SEC * F_SAMPLE
 def main():
     # Read dataset from file
     print("Reading data...")
-    data_folder = './data/'
+    data_folder = '../data/'
 
     ecg_hr = []
     bcg_hr = []
@@ -57,11 +57,11 @@ def main():
             wavelet_cycle = dc[4]
             # t1, t2, window_length, window_shift = 0, 500, 500, 500
             limit = int(math.floor(bcg.size / WINDOW_N))
-            j_peaks = detect_peaks(bcg, mpd=1000, show=False) # Detect J peaks
+            j_peaks = detect_peaks(bcg, show=False) # Detect J peaks
 
-            hr_bcg = heart_rate(j_peaks, len(bcg), t_window_sec= WINDOW_TIME_SEC, fs= F_SAMPLE) # Calculate heart rate from J peaks
+            # hr_bcg = heart_rate(j_peaks, len(bcg), t_window_sec= WINDOW_TIME_SEC, fs= F_SAMPLE) # Calculate heart rate from J peaks
             
-            # hr_bcg = vitals(T1, T2, WINDOW_N, WINDOW_N, wavelet_cycle,mpd=1, plot=0)
+            hr_bcg = vitals(T1, T2, WINDOW_N, bcg.size, wavelet_cycle,mpd=1, plot=0)
             # bcg_hr.append(np.around(np.mean(hr_bcg)))
             bcg_hr.append(hr_bcg)
             print("Heart rate (BCG): " + str(hr_bcg))
@@ -74,10 +74,10 @@ def main():
             # Plot the results of the two methods 
             print("Plotting results...")
 
-            plots.get_bland_altman_plot(ecg_hr,bcg_hr)
-            plots.get_boxplot(ecg_hr,bcg_hr)
+            # plots.get_bland_altman_plot(ecg_hr,bcg_hr)
+            # plots.get_boxplot(ecg_hr,bcg_hr)
 
-            stats.calculate_stats(ecg_hr,bcg_hr)
+            # stats.calculate_stats(ecg_hr,bcg_hr)
 
 
         # plt.figure(figsize=(10, 5))
