@@ -52,39 +52,42 @@ def get_boxplot(ecg,bcg):
     # plt.title("BCG Boxplot")
 
 
-def get_pearson_correlation(ecg,bcg):
+def get_pearson_correlation(ecg, bcg):
     ecg_array = np.asarray(ecg)
     bcg_array = np.asarray(bcg)
-
-    #CALCULATING PEARSON CORRELATION returns 2d matrix
     calc_pearson_correlation = np.corrcoef(ecg_array, bcg_array)
-    print("Pearson Correlation Matrix is " + str(calc_pearson_correlation))
-    
-    #Returns Correlation Coefficient and P-value
-    #stats.pearsonr(con['ecg_array'], con['bcg_array'])
 
-    
-    #Plotting Data
-    plt.savefig("pearson_correlation.png")
-    fig.add_subplot(rows, columns, 2)
-    sns.scatterplot(x=ecg_array, y=bcg_array,data=calc_pearson_correlation)
-
-    #Plotting Labels and Title
-    add_labels = sns.scatterplot(x=ecg_array, y=bcg_array, data=calc_pearson_correlation)
-    add_labels.set_title("Pearson Correlation")
-    add_labels.set_xlabel("ECG")
-    add_labels.set_ylabel("BCG")
-
-    #Line of best fit
+    # Line of best fit
     sns.lmplot(x="ECG", y="BCG", data=calc_pearson_correlation)
-    
 
-    #Heatmap:annot to represent cell values
-    heatmap_labels=sns.heatmap(calc_pearson_correlation, annot=True, linewidth=.5, cmap="YlGnBu")
+    plt.scatter(ecg_array, bcg_array)
+    plt.title("Pearson Correlation")
+    plt.xlabel("ECG")
+    plt.ylabel("BCG")
+    plt.savefig("pearson_correlation.png")
+
+
+def get_pearson_HeatMap(ecg, bcg):
+    ecg_array = np.asarray(ecg)
+    bcg_array = np.asarray(bcg)
+    calc_pearson_correlation = np.corrcoef(ecg_array, bcg_array)
+    heatmap_labels = sns.heatmap(calc_pearson_correlation, annot=True, linewidths=.5)
     heatmap_labels.set_title("Pearson Correlation Heatmap")
     heatmap_labels.set_xlabel("ECG")
     heatmap_labels.set_ylabel("BCG")
     plt.savefig("pearson_correlation_heatmap.png")
+    
+
+
+
+
+
+
+
+
+
+
+
 
     
    
