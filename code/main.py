@@ -83,6 +83,8 @@ def main():
             print(bcg_hr.shape)
             plots.get_bland_altman_plot(ecg_hr,bcg_hr)
             plots.get_boxplot(ecg_hr,bcg_hr)
+            plots.get_pearson_correlation(ecg_hr,bcg_hr)
+            plots.get_pearson_HeatMap(ecg_hr,bcg_hr)
 
             # stats.calculate_stats(ecg_hr,bcg_hr)
 
