@@ -12,44 +12,35 @@ from scipy import stats
  
 rows = 2
 columns = 2
-fig = plt.figure(figsize=(20, 15))
+fig = plt.figure(figsize=(8, 8))
 
 def get_bland_altman_plot(ecg,bcg):
 
     ecg_array = np.asarray(ecg)
     bcg_array = np.asarray(bcg)
-    # print("ECG ISSSSSSSSSSSSSS"+ str(ecg))
-    # print("BCG ISSSSSSSSSSSSSS"+ str(bcg)) # use debugger to see the values
-    calc_bland_altman_plot = bland_altman_plot(ecg_array, bcg_array)
-    # plt.savefig("bland_altman_plot.png")
 
+    plt.title("Bland-Altman Plot")
     # fig.add_subplot(rows, columns, 1)
+    calc_bland_altman_plot = bland_altman_plot(ecg_array, bcg_array)
+    plt.savefig("results/bland_altman_plot.png")
+    plt.show()
 
-    # plt.imshow(calc_bland_altman_plot)
-    # plt.axis('off')
-    # plt.title("Bland-Altman Plot")
 
 def get_boxplot(ecg,bcg):
 
     ecg = np.asarray(ecg)
     bcg = np.asarray(bcg)
-    plt.boxplot(ecg)
-    # plt.savefig("ecg_boxplot.png")
 
-    # fig.add_subplot(rows, columns, 3)
-    # plt.imshow(plt.boxplot(ecg))
-    # plt.axis('off')
-    # plt.title("ECG Boxplot")
+    # make the boxplots in a two figure layout
+    fig, axs  = plt.subplots(1, 2, figsize=(8, 8))
+    
+    axs[0].boxplot(ecg)
+    axs[0].set_title("ECG Boxplot")
 
-    plt.boxplot(bcg)
-    # plt.savefig("bcg_boxplot.png")
-
-    # fig.add_subplot(rows, columns, 4)
-  
-   
-    # plt.imshow(plt.boxplot(bcg))
-    # plt.axis('off')
-    # plt.title("BCG Boxplot")
+    axs[1].boxplot(bcg)
+    axs[1].set_title("BCG Boxplot")
+    plt.savefig("results/boxplot.png")
+    # plt.show(plt.boxplot(bcg))
 
 
 def get_pearson_correlation(ecg, bcg):
@@ -69,14 +60,14 @@ def get_pearson_correlation(ecg, bcg):
     sns.lmplot(x="ECG", y="BCG", data=dataframe)
 
     plt.scatter(ecg_array, bcg_array)
-    plt.title("Pearson Correlation of " + str(calc_pearson_correlation))
+    plt.title("Pearson Correlation of " + str(calc_pearson_correlation.flatten()))
     plt.xlabel("ECG")
     plt.ylabel("BCG")
     plt.savefig("results/pearson_correlation.png")
-    # plt.imshow()
+    plt.show()
 
 
-def get_pearson_HeatMap(ecg, bcg):
+def get_pearson_heatmap(ecg, bcg):
     ecg_array = np.asarray(ecg)
     bcg_array = np.asarray(bcg)
     calc_pearson_correlation = np.corrcoef(ecg_array, bcg_array)
@@ -84,7 +75,8 @@ def get_pearson_HeatMap(ecg, bcg):
     heatmap_labels.set_title("Pearson Correlation Heatmap")
     heatmap_labels.set_xlabel("ECG")
     heatmap_labels.set_ylabel("BCG")
-    # plt.savefig("results/pearson_correlation_heatmap.png")
+    plt.savefig("results/pearson_correlation_heatmap.png")
+    plt.show()
     
 
 
