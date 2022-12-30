@@ -61,7 +61,7 @@ def main():
 
             # hr_bcg = heart_rate(j_peaks, len(bcg), t_window_sec= WINDOW_TIME_SEC, fs= F_SAMPLE) # Calculate heart rate from J peaks
             
-            hr_bcg = vitals(T1, T2, WINDOW_N, bcg.size, wavelet_cycle,mpd=1, plot=0)
+            hr_bcg = vitals(T1, WINDOW_N, WINDOW_N, bcg.size, wavelet_cycle,mpd=1, plot=0)
             # bcg_hr.append(np.around(np.mean(hr_bcg)))
             bcg_hr.append(hr_bcg)
             print("Heart rate (BCG): " + str(hr_bcg))
