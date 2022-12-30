@@ -21,17 +21,18 @@ F_SAMPLE = 50
 WINDOW_TIME_SEC = 10
 WINDOW_N = WINDOW_TIME_SEC * F_SAMPLE
 
+detectors = Detectors(F_SAMPLE)
 
 def main():
     # Read dataset from file
     print("Reading data...")
-    data_folder = '../data/'
+    data_folder = './data/'
 
-    # ecg_hr = []
-    # bcg_hr = []
+    ecg_hr = []
+    bcg_hr = []
     # Loop over all files in the folder
-    for file in os.listdir(data_folder)[:2]:
-        if file.endswith(".csv") and file.startswith("X"):
+    for file in os.listdir(data_folder):
+        if file.endswith(".csv") and file.startswith("X1008"):
             print(os.path.join(data_folder, file))
             path = os.path.join(data_folder, file)
             data = read_data(path)    
@@ -45,28 +46,39 @@ def main():
 
             # Detect peaks of ECG using pan tompkins library
             print("Detecting peaks of ECG...")
-            # detectors = Detectors(F_SAMPLE) # Initialize detectors object
-            # r_peaks = detectors.pan_tompkins_detector(ecg) # Detect R peaks
-            w = modwt(ecg, 'bior3.9', 4)
-            dc = modwtmra(w, 'bior3.9')
-            wavelet_cycle_ecg = dc[4]
+
+            
+            ## good idea-------------------------------------------------------
+            
             # r_peaks = hp.process(ecg, F_SAMPLE)[0]['peaklist']# Using heartpy library
 
-            # hr_ecg = heart_rate(r_peaks, len(ecg), t_window_sec= WINDOW_TIME_SEC, fs= F_SAMPLE) # Calculate heart rate from R peaks
-            # ecg_hr.append(hr_ecg)
-            t1, t2, window_length, window_shift = 0, 500, 500, 500
-            limit = int(math.floor(bcg.size / window_shift))
-            # ECG_flat = ECG_data.flatten()
-            hr_ecg = []
-            for k in range(0, limit+1):
-                wd, m = hp.process(wavelet_cycle_ecg[t1:t2],50)
-                heartRate_ecg = m["bpm"]
-                hr_ecg.append(heartRate_ecg)
-                t1 = t2
-                t2 += window_shift
+            # using stationary wavelet transform 
+
+            r_peaks = detectors.swt_detector(ecg) # Detect R peaks
+            hr_ecg = heart_rate(r_peaks, len(ecg), t_window_sec= WINDOW_TIME_SEC, fs= F_SAMPLE) # Calculate heart rate from R peaks
+            ecg_hr.append(hr_ecg)
+
+
+            ## bad idea-------------------------------------------------------
+            # w = modwt(ecg, 'bior3.9', 4)
+            # dc = modwtmra(w, 'bior3.9')
+            # wavelet_cycle_ecg = dc[4]
+            # t1, t2, window_length, window_shift = 0, 500, 500, 500
+            # limit = int(math.floor(bcg.size / window_shift))
+            # # ECG_flat = ECG_data.flatten()
+            # hr_ecg = []
+            # for k in range(0, limit+1):
+            #     wd, m = hp.process(wavelet_cycle_ecg[t1:t2],50) #TODO: very problematic implementation please check
+            #     heartRate_ecg = m["bpm"]
+            #     hr_ecg.append(heartRate_ecg)
+            #     t1 = t2
+            #     t2 += window_shift
+            # ----------------------------------------------------------------------------
 
             print("Heart rate (ECG): " + str(hr_ecg))
 
+
+            ## BCG -----------------------------------------------------------------------
             # Detect Peaks of BCG by adapting the dr's code
             print("Detecting peaks of BCG...")
             w = modwt(bcg, 'bior3.9', 4)
@@ -83,11 +95,14 @@ def main():
             # bcg_hr.append(hr_bcg)
             print("Heart rate (BCG): " + str(hr_bcg))
 
+
+            # OUTPUTS --------------------------------------------------------------------
+            
             # Print the results of the two methods
 
             print("Printing results...\n")
 
-            prints.print_summary(hr_ecg,hr_bcg,file)
+            prints.print_summary(hr_ecg,hr_bcg,file[1:5])
 
             # Plot the results of the two methods 
             print("Plotting results...")
@@ -95,11 +110,15 @@ def main():
             hr_bcg = np.array(hr_bcg).flatten()
             print(hr_ecg.shape)
             print(hr_bcg.shape)
-            # plots.get_bland_altman_plot(hr_ecg,hr_bcg)
+
+            stats.calculate_stats(hr_ecg,hr_bcg, file[1:5])
+            
+
+            plots.get_bland_altman_plot(hr_ecg,hr_bcg)
             plots.get_boxplot(hr_ecg,hr_bcg)
+            plots.get_pearson_correlation(hr_ecg,hr_bcg)
+            plots.get_pearson_HeatMap(hr_ecg,hr_bcg)
 
-
-            # stats.calculate_stats(ecg_hr,bcg_hr)
 
 
         # plt.figure(figsize=(10, 5))

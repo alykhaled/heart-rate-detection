@@ -1,11 +1,11 @@
 import numpy as np
 
 
-def print_summary(hr_ecg,hr_bcg,filename):
+def print_summary(hr_ecg,hr_bcg,patient_id):
 
     #convert prints to string
     summary = '----------------------\n'
-    summary += 'patient id : ' + str(filename[1:4]) + '\n'
+    summary += 'patient id : ' + str(patient_id) + '\n'
     summary += 'Heart Rate Information\n'
     summary += '----------------------\n'
     summary += 'ECG Method\n'
