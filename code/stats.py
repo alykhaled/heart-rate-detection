@@ -35,3 +35,6 @@ def calculate_stats(ecg,bcg, patient_id):
     print("Mean Absolute Error = " + str(mean_absolute_error))
     print("Root Mean Square Error = " + str(root_mean_square_error))
     print("Mean Absolute Percentage Error = " + str(mean_absolute_percentage_error)+ "%")
+
+    #return dictionary of stats
+    return {"MAE":mean_absolute_error,"RMSE":root_mean_square_error,"MAPE":mean_absolute_percentage_error}

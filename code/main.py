@@ -31,7 +31,7 @@ def main():
     ecg_hr = []
     bcg_hr = []
     # Loop over all files in the folder
-    for file in os.listdir(data_folder):
+    for file in os.listdir(data_folder)[:10]:
         if file.endswith(".csv") and file.startswith("X"):
             print(os.path.join(data_folder, file))
             path = os.path.join(data_folder, file)
@@ -67,33 +67,38 @@ def main():
             dc = modwtmra(w, 'bior3.9')
             wavelet_cycle = dc[4]
             limit = int(math.floor(bcg.size / WINDOW_N))
-            # j_peaks = detect_peaks(bcg, show=False) # Detect J peaks
             hr_bcg = vitals(T1, T2, WINDOW_N, limit, wavelet_cycle, F_SAMPLE, mpd=1, plot=0)
             print("Heart rate (BCG): " + str(hr_bcg))
 
 
             # OUTPUTS --------------------------------------------------------------------
             
-            # Print the results of the two methods
-
-            print("Printing results...\n")
-            prints.print_summary(hr_ecg,hr_bcg,file[1:5])
+            
+            # if nan in hr_ecg or nan in hr_bcg remove it
+            if np.isnan(hr_ecg).any():
+                hr_ecg = np.nan_to_num(hr_ecg)
+            if np.isnan(hr_bcg).any():
+                hr_bcg = np.nan_to_num(hr_bcg)
 
             # if one is larger than the other, remove the last element
             if len(hr_ecg) > len(hr_bcg):
                 ecg_hr = hr_ecg[:-1]
             elif len(hr_ecg) < len(hr_bcg):
                 hr_bcg = hr_bcg[:-1]
-                
+            
+            # append to the big list (all patients)
             ecg_hr.append(hr_ecg)
             bcg_hr.append(hr_bcg)
             
-            stats.calculate_stats(hr_ecg,hr_bcg, file[1:5])
+            # Print the results of the two methods
+            print("Printing results...\n")
+
+            stat_dict = stats.calculate_stats(hr_ecg,hr_bcg, file[1:5])
+            prints.print_summary(hr_ecg,hr_bcg, file[1:5])
+            prints.print_full_summary(hr_ecg,hr_bcg, stat_dict, file[1:5])
             
     # Plot the results of the two methods 
     print("Plotting results...")
-    # ecg_hr = np.array(ecg_hr).flatten()
-    # bcg_hr = np.array(bcg_hr).flatten()
 
     # flatten ecg_hr and bcg_hr
     ecg_hr = [item for sublist in ecg_hr for item in sublist]
@@ -106,15 +111,6 @@ def main():
 
     # hold program
     input("Press Enter to continue...")
-
-
-        # plt.figure(figsize=(10, 5))
-        # plt.plot(ecg_hr, label='ECG')
-        # plt.plot(bcg_hr, label='BCG')
-        # plt.xlabel('Patient')
-        # plt.ylabel('Heart rate (bpm)')
-        # plt.legend()
-        # plt.show()
 
 if __name__ == '__main__':
     main()
