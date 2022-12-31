@@ -42,10 +42,14 @@ This program makes use of ECG and BCG signals to detect heart rate and generates
 
 ### Plots
 
-![Bland-Altman](/results/bland_altman_plot.png)
-![Boxplots](/results/boxplot.png)
-![Pearson](/results/pearson_correlation.png)
-![Pearson Heatmap](/results/pearson_correlation_heatmap.png)
+| Bland Altman | Boxplots |
+| --- | --- | 
+| ![Bland-Altman](/results/bland_altman_plot.png) | ![Boxplots](/results/boxplot.png) |
+
+| Pearson Correlation | Pearson Corr. Heatmap |
+| --- | --- |
+| ![Pearson](/results/pearson_correlation.png) | ![Pearson Heatmap](/results/pearson_correlation_heatmap.png) |
+
 
 ## Team Members
 
