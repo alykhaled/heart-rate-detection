@@ -55,10 +55,10 @@ This program makes use of ECG and BCG signals to detect heart rate and generates
 
 | Name | Github |
 | --- | --- |
-|Aly Khaled|[@alykhaled](github.com/alykhaled)|
-|Mariam Aly|[@MariaamAly](github.com/MariaamAly)|
-|Maryam Moataz|[@MaryamMoataz](github.com/MaryamMoataz)|
-|Mohamed Nasser|[@mo-gaafar](github.com/mo-gaafar)|
+|Aly Khaled|[@alykhaled](https://www.github.com/alykhaled)|
+|Mariam Aly|[@MariaamAly](https://www.github.com/MariaamAly)|
+|Maryam Moataz|[@MaryamMoataz](https://www.github.com/MaryamMoataz)|
+|Mohamed Nasser|[@mo-gaafar](https://www.github.com/mo-gaafar)|
 
 ## References
 
